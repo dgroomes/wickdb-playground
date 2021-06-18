@@ -40,3 +40,7 @@ General clean ups, TODOs and things I wish to implement for this project:
   * This is my own repo where I have sample programs that use a ZIP code data set from the official MongoDB docs. I've
     found that ZIP code data is intuitive and effective when playing with databases–or, more generally–*storage engines*
     like wickdb.
+* [*Designing Data-Intensive Applications: Chapter 3. Storage and Retrieval*](https://learning.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/ch03.html)
+  * I highly recommend this book and specifically this chapter. It concisely describes Sorted String Tables (SSTables),
+    Log-Structured Merge-Trees (LSM-Tree) and B-Trees ([the B is ambiguous](https://stackoverflow.com/a/2263867)) and then
+    compares and contrasts their core advantages.

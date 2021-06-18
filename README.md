@@ -20,13 +20,18 @@ This project was developed on macOS and for my own personal use.
 
 General clean ups, TODOs and things I wish to implement for this project:
 
-* I'm not sure how to consume wickdb in my project because it doesn't look like it's published as a library crate in crates.io.
+* DONE I'm not sure how to consume wickdb in my project because it doesn't look like it's published as a library crate in crates.io.
   I've found a crate called ["lsm"](https://github.com/kaimast/lsm-rs) when I search using `cargo search wickdb`. Can I
   build wickdb locally to a local Crates repository, like I would in the Java world with Gradle/Maven? I also though about
   cloning wickdb into this repo but I don't to end up with a jumble of Git commit history. I would prefer to have a clean
   fork that is separate from this repo. By clean I mean very little source changes from the upstream, so that it's easy to
   sync the fork in the future.
+  * Update: I have decided to try a submodule again. The Rust way to depend on other unpublished packages is to use relative
+    paths to these packages on your filesystem. So, I don't really want my Cargo.toml to depends on something like `../my-cloned-open-source-repos/wickdb`
+    because that would be custom to my current system and wouldn't work on any other computer. So if I add it as a submodule
+    instead, then I can depend on it with a path that will always work: `wickdb`.
 * Implement everything!
+* Write all ZIP area records to the wickdb datastore
 
 ## Reference
 

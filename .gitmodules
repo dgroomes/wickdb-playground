@@ -1,0 +1,3 @@
+[submodule "wickdb"]
+	path = wickdb
+	url = https://github.com/Fullstop000/wickdb.git

@@ -21,6 +21,11 @@ const AGAWAM_MA_01001_ZIP_CODE: &str = "01001";
 /// Run the program. Editorialization: a function called "run" is probably at home in "main.rs" not
 /// "lib.rs".
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    println!(
+        "Summarizing ZIP code data from the file '{}'...",
+        config.filename
+    );
+
     let file = File::open(config.filename).expect("File could not be opened.");
     let summary = count_lines(file);
 
@@ -42,16 +47,11 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     )
     .expect("Failed to put a ZIP area entry into wickdb");
 
-    // Read the entry back out of wickdb
-    // I don't know yet how to make this a string to print it...
-    let found = db
-        .get(ReadOptions::default(), AGAWAM_MA_01001_ZIP_CODE.as_bytes())
-        .expect("Failed to read a ZIP area entry from wickdb")
-        .expect("Record read from wickdb was empty");
-
-    // Convert the raw bytes to a string
+    // Read the entry back out of wickdb and convert it to a string
     let stringified = &mut String::new();
-    found
+    db.get(ReadOptions::default(), AGAWAM_MA_01001_ZIP_CODE.as_bytes())
+        .expect("Failed to read a ZIP area entry from wickdb")
+        .expect("Record read from wickdb was empty")
         .as_slice()
         .read_to_string(stringified)
         .expect("Failed to serialize raw bytes to string");

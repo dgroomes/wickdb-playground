@@ -18,15 +18,15 @@ fn main() {
         process::exit(1);
     });
 
-    println!("Counting lines in file {}", config.filename);
-
     if let Err(e) = run(config) {
-        println!("Application error: {}", e);
+        println!("Something went wrong: {}", e);
 
         process::exit(1);
     }
 }
 
+/// Parse configuration data from the program arguments.
+///
 /// In my opinion, main.rs should be responsible for turning program arguments into "prepared configuration"
 /// data. If main.rs is so thin that it doesn't even do this work, that's a waste.
 pub fn parse_config(args: &[String]) -> Result<Config, &str> {

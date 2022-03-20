@@ -13,8 +13,24 @@ This project was developed on macOS and for my own personal use.
 
 ## Instructions
 
-* Build and run
-  * `cargo run zips.json`
+Follow these instructions to build and run the program.
+
+1. Build and run
+   * `cargo run zips.json WARN`
+   * Altogether, it should look something like this:
+     ```text
+     $ cargo run zips.json WARN
+         Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+          Running `target/debug/wickdb-playground zips.json WARN`
+     Counting lines in file zips.json
+     Number of ZIP areas: 29353
+     Total population: 248408400
+     Successfully read the ZIP area data from wickdb. { "_id" : "01001", "city" : "AGAWAM", "loc" : [ -72.622739, 42.070206 ], "pop" : 15338, "state" : "MA" }
+     ```
+1. Try with more granular logging 
+   * `cargo run zips.json DEBUG`
+   * Notice how much information is logged from wickdb. Read the logs and build your understanding of what wickdb is
+     doing. 
 
 ## Wish list
 
@@ -32,7 +48,7 @@ General clean ups, TODOs and things I wish to implement for this project:
     instead, then I can depend on it with a path that will always work: `wickdb`.
 * Implement everything!
 * Write all ZIP area records to the wickdb datastore
-* Parameterize the wickdb log level as a program argument. Debug logs don't work well for a first demo
+* DONE Parameterize the wickdb log level as a program argument. Debug logs don't work well for a first demo
 
 ## Reference
 

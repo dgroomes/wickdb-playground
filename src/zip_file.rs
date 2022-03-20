@@ -6,7 +6,7 @@ use crate::zip::ZipArea;
 // A struct that represents the file containing the original raw ZIP code data.
 #[allow(dead_code)]
 pub struct ZipAreaFileSource {
-    lines: Lines<BufReader<File>>
+    lines: Lines<BufReader<File>>,
 }
 
 impl ZipAreaFileSource {
@@ -24,11 +24,10 @@ impl Iterator for ZipAreaFileSource {
     fn next(&mut self) -> Option<Self::Item> {
         let option = self.lines.next();
         let return_option: Option<ZipArea> = match option {
-            None => {
-                Option::None
-            }
+            None => Option::None,
             Some(Result::Ok(json)) => {
-                let zip_area = serde_json::from_str(&json).expect("Failed to deserialize ZIP area JSON document");
+                let zip_area = serde_json::from_str(&json)
+                    .expect("Failed to deserialize ZIP area JSON document");
                 Option::Some(zip_area)
             }
             Some(Err(_)) => {

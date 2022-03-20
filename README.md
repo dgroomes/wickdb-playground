@@ -49,6 +49,10 @@ General clean ups, TODOs and things I wish to implement for this project:
 * Implement everything!
 * Write all ZIP area records to the wickdb datastore
 * DONE Parameterize the wickdb log level as a program argument. Debug logs don't work well for a first demo
+* Format numbers for US localization (the number 1234 should format as "1,234"). I see two third-party crates for this
+  ("thousands" and "num_fmt") and they are both updated last 2019. I'd rather not depend on these for a demo app like
+  this. This is a weak spot for Rust compared to most AAA languages. In Java, formatting a number is as easy as `NumberFormat.getInstance().format(myNumber);`
+  in the easy case.
 
 ## Reference
 

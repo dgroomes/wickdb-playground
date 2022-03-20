@@ -18,6 +18,8 @@ pub struct Config {
 
 const AGAWAM_MA_01001_ZIP_CODE: &str = "01001";
 
+/// Run the program. Editorialization: a function called "run" is probably at home in "main.rs" not
+/// "lib.rs".
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let file = File::open(config.filename).expect("File could not be opened.");
     let summary = count_lines(file);
@@ -64,7 +66,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 fn count_lines(file: File) -> Summary {
     let zip_file_source = ZipAreaFileSource::new(file);
-    let mut population: u64 = 0;
+    let mut population: u32 = 0;
     let mut zip_areas: u32 = 0;
     for zip_area in zip_file_source {
         population = population + zip_area.pop;
@@ -79,5 +81,5 @@ fn count_lines(file: File) -> Summary {
 
 pub struct Summary {
     pub zip_areas: u32,
-    pub population: u64,
+    pub population: u32,
 }

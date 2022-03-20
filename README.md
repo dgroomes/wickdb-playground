@@ -4,12 +4,7 @@ WORK IN PROGRESS
 
 📚 Learning and exploring the pure Rust LSM-tree embedded storage engine [`wickdb`](https://github.com/Fullstop000/wickdb).
 
----
-**NOTE**:
-
-This project was developed on macOS and for my own personal use.
-
----
+**NOTE**: This project was developed on macOS and for my own personal use.
 
 ## Instructions
 
@@ -27,10 +22,14 @@ Follow these instructions to build and run the program.
      Total population: 248408400
      Successfully read the ZIP area data from wickdb. { "_id" : "01001", "city" : "AGAWAM", "loc" : [ -72.622739, 42.070206 ], "pop" : 15338, "state" : "MA" }
      ```
-1. Try with more granular logging 
+2. Try with more granular logging 
    * `cargo run zips.json DEBUG`
    * Notice how much information is logged from wickdb. Read the logs and build your understanding of what wickdb is
      doing. 
+3. Experiment!
+   * Change some code, build and run it, and continue experimenting. Occasionally, run the formatter so the source code
+     adheres closer to idiomatic Rust. Use the following command.
+   * `cargo fmt`
 
 ## Wish list
 

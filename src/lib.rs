@@ -1,10 +1,15 @@
+use std::env::temp_dir;
 use std::error::Error;
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
-use serde::Deserialize;
+use std::io::{prelude::*};
+
+use wickdb::{BytewiseComparator, DB, LevelFilter, Options, ReadOptions, WickDB, WriteOptions};
 use wickdb::file::FileStorage;
-use wickdb::{BytewiseComparator, LevelFilter, Options, ReadOptions, WickDB, WriteOptions, DB};
-use std::env::temp_dir;
+
+use zip_file::ZipAreaFileSource;
+
+mod zip_file;
+mod zip;
 
 pub struct Config {
     pub filename: String,
@@ -25,7 +30,7 @@ impl Config {
 const AGAWAM_MA_01001_ZIP_CODE: &str = "01001";
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let file = File::open(config.filename)?;
+    let file = File::open(config.filename).expect("File could not be opened.");
     let summary = count_lines(file);
 
     println!("Number of ZIP areas: {}", summary.zip_areas);
@@ -50,7 +55,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
     // Convert the raw bytes to a string
     let stringified = &mut String::new();
-    found.as_slice().read_to_string(stringified);
+    found.as_slice().read_to_string(stringified).expect("Failed to serialize raw bytes to string");
 
     println!("Successfully read the ZIP area data from wickdb. {}", stringified);
 
@@ -58,19 +63,12 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn count_lines(file: File) -> Summary {
-    let reader = BufReader::new(file);
-
+    let zip_file_source = ZipAreaFileSource::new(file);
     let mut population: u64 = 0;
     let mut zip_areas: u32 = 0;
-    for line in reader.lines() {
-        match line {
-            Ok(json) => {
-                let zip_area: ZipArea = serde_json::from_str(&json).unwrap();
-                population = population + zip_area.pop;
-                zip_areas = zip_areas + 1;
-            }
-            Err(_) => panic!("Found error while reading a line from the file")
-        }
+    for zip_area in zip_file_source {
+        population = population + zip_area.pop;
+        zip_areas = zip_areas + 1;
     }
 
     Summary { zip_areas, population }
@@ -79,11 +77,4 @@ fn count_lines(file: File) -> Summary {
 pub struct Summary {
     pub zip_areas: u32,
     pub population: u64,
-}
-
-#[derive(Debug, Deserialize)]
-struct ZipArea {
-    city: String,
-    state: String,
-    pop: u64,
 }

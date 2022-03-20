@@ -32,6 +32,7 @@ General clean ups, TODOs and things I wish to implement for this project:
     instead, then I can depend on it with a path that will always work: `wickdb`.
 * Implement everything!
 * Write all ZIP area records to the wickdb datastore
+* Parameterize the wickdb log level as a program argument. Debug logs don't work well for a first demo
 
 ## Reference
 

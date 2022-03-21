@@ -1,13 +1,12 @@
-use std::env::temp_dir;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 
-use wickdb::file::FileStorage;
-use wickdb::{BytewiseComparator, LevelFilter, Options, ReadOptions, WickDB, WriteOptions, DB};
+use wickdb::{DB, LevelFilter, ReadOptions, WriteOptions};
 
 use zip_file::ZipAreaFileSource;
 
+mod db;
 mod zip;
 mod zip_file;
 
@@ -33,10 +32,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     println!("Total population: {}", summary.population);
 
     // Create an embedded wickdb storage file (what is the correct word?) and insert some data
-    let mut options = Options::<BytewiseComparator>::default();
-    options.logger_level = config.log_level;
-    let dir = temp_dir().join("test_zips_wickdb");
-    let db = WickDB::open_db(options, &dir, FileStorage::default()).unwrap();
+    let db = db::create(config.log_level);
 
     let _01001_zip_data = r#"{ "_id" : "01001", "city" : "AGAWAM", "loc" : [ -72.622739, 42.070206 ], "pop" : 15338, "state" : "MA" }"#;
 
@@ -45,7 +41,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         AGAWAM_MA_01001_ZIP_CODE.as_bytes(),
         _01001_zip_data.as_bytes(),
     )
-    .expect("Failed to put a ZIP area entry into wickdb");
+        .expect("Failed to put a ZIP area entry into wickdb");
 
     // Read the entry back out of wickdb and convert it to a string
     let stringified = &mut String::new();

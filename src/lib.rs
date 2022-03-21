@@ -1,50 +1,27 @@
 extern crate core;
 
-use std::error::Error;
 use std::fs::File;
 use std::io::Read;
 
+use wickdb::{BytewiseComparator, DB, Iterator, ReadOptions, WickDB, WriteOptions};
 use wickdb::file::FileStorage;
-use wickdb::{BytewiseComparator, Iterator, LevelFilter, ReadOptions, WickDB, WriteOptions, DB};
 
 use zip_file::ZipAreaFileSource;
 
 use crate::zip_json::ZipAreaJsonRecord;
 
-mod db;
 mod zip;
 mod zip_file;
 mod zip_json;
 
-pub struct Config {
-    pub filename: String,
-    pub log_level: LevelFilter,
-}
-
-/// Run the program. Editorialization: a function called "run" is probably at home in "main.rs" not
-/// "lib.rs".
-pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    // Create an embedded wickdb storage file (what is the correct word?) and insert some data
-    let db = db::create(config.log_level);
-
-    ingest_from_file(config, &db);
-
-    let summary = summarize(db);
-
-    println!("Number of ZIP areas: {}", summary.zip_areas);
-    println!("Total population: {}", summary.population);
-
-    Ok(())
-}
-
 /// Ingest all ZIP code data from the JSON file into the wickdb embedded database.
-fn ingest_from_file(config: Config, db: &WickDB<FileStorage, BytewiseComparator>) {
+pub fn ingest_from_file(filename: String, db: &WickDB<FileStorage, BytewiseComparator>) {
     println!(
         "Ingesting ZIP code data from the file '{}'...",
-        config.filename
+        filename
     );
 
-    let file = File::open(config.filename).expect("File could not be opened.");
+    let file = File::open(filename).expect("File could not be opened.");
     let zip_file_source = ZipAreaFileSource::new(file);
 
     for (json, zip_area) in zip_file_source {
@@ -61,7 +38,7 @@ fn ingest_from_file(config: Config, db: &WickDB<FileStorage, BytewiseComparator>
 }
 
 /// Read all ZIP records from the wickdb database and summarize the data.
-fn summarize(db: WickDB<FileStorage, BytewiseComparator>) -> Summary {
+pub fn summarize(db: WickDB<FileStorage, BytewiseComparator>) -> Summary {
     println!("Summarizing ZIP code data from the wickdb embedded database...");
     let mut population: u32 = 0;
     let mut zip_areas: u32 = 0;

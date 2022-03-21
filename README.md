@@ -1,7 +1,5 @@
 # wickdb-playground
 
-WORK IN PROGRESS
-
 📚 Learning and exploring the pure Rust LSM-tree embedded storage engine [`wickdb`](https://github.com/Fullstop000/wickdb).
 
 **NOTE**: This project was developed on macOS and for my own personal use.
@@ -14,13 +12,14 @@ Follow these instructions to build and run the program.
    * `cargo run zips.json WARN`
    * Altogether, it should look something like this:
      ```text
-     $ cargo run zips.json WARN
-         Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+     ❯ cargo run zips.json WARN
+        Compiling wickdb-playground v0.1.0 (/Users/davidgroomes/repos/personal/wickdb-playground)
+         Finished dev [unoptimized + debuginfo] target(s) in 0.98s
           Running `target/debug/wickdb-playground zips.json WARN`
-     Counting lines in file zips.json
+     Ingesting ZIP code data from the file 'zips.json'...
+     Summarizing ZIP code data from the wickdb embedded database...
      Number of ZIP areas: 29353
      Total population: 248408400
-     Successfully read the ZIP area data from wickdb. { "_id" : "01001", "city" : "AGAWAM", "loc" : [ -72.622739, 42.070206 ], "pop" : 15338, "state" : "MA" }
      ```
 2. Try with more granular logging 
    * `cargo run zips.json DEBUG`
@@ -46,7 +45,7 @@ General clean ups, TODOs and things I wish to implement for this project:
     because that would be custom to my current system and wouldn't work on any other computer. So if I add it as a submodule
     instead, then I can depend on it with a path that will always work: `wickdb`.
 * Implement everything!
-* Write all ZIP area records to the wickdb datastore
+* DONE Write all ZIP area records to the wickdb datastore
 * DONE Parameterize the wickdb log level as a program argument. Debug logs don't work well for a first demo
 * Format numbers for US localization (the number 1234 should format as "1,234"). I see two third-party crates for this
   ("thousands" and "num_fmt") and they are both updated last 2019. I'd rather not depend on these for a demo app like
